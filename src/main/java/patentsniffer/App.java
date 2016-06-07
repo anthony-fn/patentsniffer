@@ -5,10 +5,11 @@ import org.apache.logging.log4j.Logger;
 
 public class App {
 
-    static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     public static void main(String[] args) {
-        System.out.println("专利嗅探器启动...");
         logger.info("专利嗅探器启动...");
+        logger.warn("warn test");
+        logger.error("warn test");
         
         try {
             PatentConfig.init("config/configuration.properties");
@@ -16,7 +17,6 @@ public class App {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println("专利嗅探器关闭...");
         logger.info("专利嗅探器关闭...");
     }
 
