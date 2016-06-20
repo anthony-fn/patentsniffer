@@ -16,7 +16,7 @@ public class HtmlDownloader {
     {
         HttpClient client = new HttpClient();
         GetMethod method = new GetMethod(source);
-        client.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET,"gb2312");
+        client.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET,"GBK");
         try {
             // Execute the method.
             int statusCode = client.executeMethod(method);
@@ -30,7 +30,7 @@ public class HtmlDownloader {
 
             // Deal with the response.
             // Use caution: ensure correct character encoding and is not binary data
-            System.out.println(new String(responseBody));
+            return new String(responseBody, "UTF-8");
 
           } catch (HttpException e) {
             System.err.println("Fatal protocol violation: " + e.getMessage());
@@ -43,10 +43,5 @@ public class HtmlDownloader {
             method.releaseConnection();
           }  
         return "";
-    }
-    
-    public static void main(String[] args)
-    {
-        logger.info(HtmlDownloader.getHtml("http://www.sipo-reexam.gov.cn/"));
     }
 }
