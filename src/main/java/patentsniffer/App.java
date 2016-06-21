@@ -7,17 +7,19 @@ public class App {
 
     private static final Logger logger = LogManager.getLogger();
     public static void main(String[] args) {
-        logger.info("专利嗅探器启动...");
+        logger.info("涓撳埄鍡呮帰鍣ㄥ惎鍔�...");
         logger.warn("warn test");
         logger.error("warn test");
         
         try {
             PatentConfig.init("config/configuration.properties");
+            HtmlDownloader.writeDown();
+            TasksParser.getUnits();
         } catch (PatentException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        logger.info("专利嗅探器关闭...");
+        logger.info("涓撳埄鍡呮帰鍣ㄥ叧闂�...");
     }
 
 }
