@@ -18,50 +18,58 @@ import org.apache.commons.httpclient.methods.*;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
 public class HtmlDownloader {
+	
     private static final Logger logger = LogManager.getLogger();
-    //private MultiThreadedHttpConnectionManager manager = new MultiThreadedHttpConnectionManager(); 
-    static String lineSeparator = System.getProperty("line.separator", "\n");  
-    public static void writeDown()
+    
+    private String targetFile = "";
+    private String sourceURL = "";
+    
+    // tempData.txt
+    // "http://app.sipo-reexam.gov.cn/reexam_out/index2.jsp"
+    public HtmlDownloader( String sourceURL, String targetFile )
     {
-    	File file = new File("/Users/Anthony/GitHub/patentsniffer/tempData.txt");
-    	// "http://app.sipo-reexam.gov.cn/reexam_out/index2.jsp"
+    	this.targetFile = targetFile;
+    	this.sourceURL = sourceURL;
+    }
+    
+    public void loadHTMLintoFile() throws PatentException
+    {
+    	File file = new File(targetFile);
     	if( file.exists() )
     		file.delete();
+    	
     	OutputStream os;
 		try {
 			os = new FileOutputStream(file);
-			String content = getHtml("http://app.sipo-reexam.gov.cn/reexam_out/index2.jsp");
+			String content = getHtml(sourceURL);
 			os.write(content.getBytes("UTF-8"));
 			os.flush();
 	    	os.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("There's not file named "+targetFile);
+			throw new PatentException( "There's not file named "+targetFile, e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	   
+			throw new PatentException( e.getMessage(), e);
+		}   	   
     }
     
-    static String inputStream2String(InputStream is){
+    private String inputStream2String(InputStream is) throws PatentException{
     	   BufferedReader in = new BufferedReader(new InputStreamReader(is));
     	   StringBuffer buffer = new StringBuffer();
     	   String line = "";
     	   try {
 			while ((line = in.readLine()) != null){
 			     buffer.append(line);
-			     buffer.append(lineSeparator);
+			     buffer.append(Statics.LINE_SEPARATOR);
 			   }
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("InputSteam from HTML to String filed.");
+			throw new PatentException("InputSteam from HTML to String filed.", e);
 		}
     	   return buffer.toString();
     	}
     
-    private static String  getHtml( String source )
+    private String getHtml( String source ) throws PatentException
     {
         HttpClient client = new HttpClient();
         GetMethod method = new GetMethod(source);
@@ -77,15 +85,14 @@ public class HtmlDownloader {
             return inputStream2String(method.getResponseBodyAsStream());
 
           } catch (HttpException e) {
-            System.err.println("Fatal protocol violation: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Fatal protocol violation: " + e.getMessage());
+            throw new PatentException("Fatal protocol violation: " + e.getMessage(), e);
           } catch (IOException e) {
-            System.err.println("Fatal transport error: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Fatal transport error: " + e.getMessage());
+            throw new PatentException("Fatal transport error: " + e.getMessage(), e);
           } finally {
             // Release the connection.
             method.releaseConnection();
-          }
-		return "";  
+          }  
     }
 }

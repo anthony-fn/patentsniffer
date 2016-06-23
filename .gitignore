@@ -1,2 +1,12 @@
 /target/
 logs/
+
+data/tempData
+
+tempData.txt
+
+data/previous
+
+tempData.txt
+
+test.html

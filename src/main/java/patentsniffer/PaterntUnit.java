@@ -2,13 +2,13 @@ package patentsniffer;
 
 public class PaterntUnit {
 
-	private int number = 0;
+	private String number = "";
 	private String href = "";
 	private String name = "";
 	private String date = "";
+	private String location = "";
 	
-	
-	public static void main( String [] args )
+	/*public static void main( String [] args )
 	{
 		String content = "<td>&nbsp;110318</td>"
 +"<td>"
@@ -17,6 +17,11 @@ public class PaterntUnit {
 +"<td style=\"color: #999999\">&nbsp;2016-06-06</td>";
 		
 		PaterntUnit temp = new PaterntUnit(content);
+	}*/
+	
+	public PaterntUnit()
+	{
+		super();
 	}
 	
 	public PaterntUnit( String content )
@@ -24,7 +29,7 @@ public class PaterntUnit {
 		int start = content.indexOf(";");
 		int end = content.indexOf("</td>");
 		String first = content.substring(start+1, end);
-		number = Integer.parseInt(first);
+		number = first.replace(".", "");
 		
 		start = content.indexOf("<a href=\"");
 		end = content.indexOf("\" target=\"");
@@ -42,11 +47,11 @@ public class PaterntUnit {
 		String fourth = content.substring(start+7, end);
 		date = fourth;
 	}
-	public int getNumber()
+	public String getNumber()
 	{
 		return number;
 	}
-	public void setNumber(int number )
+	public void setNumber(String number )
 	{
 		this.number = number;
 	}
@@ -84,7 +89,15 @@ public class PaterntUnit {
 	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(number+";"+name+";"+date+";"+href);
+		sb.append(number+";"+name+";"+date+";"+location+";"+href);
 		return sb.toString();
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }

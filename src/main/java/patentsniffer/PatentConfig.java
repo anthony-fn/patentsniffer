@@ -13,6 +13,8 @@ public class PatentConfig {
     private static String targetURL = "";
     private static String sourceURL = "";
     private static String output = ""; 
+    private static String tempData = "";
+    private static String previousTasks = "";
     
     
     public static String getTargetURL()
@@ -38,28 +40,57 @@ public class PatentConfig {
         return true;
     }
     
+    private static void createDataFolderIfNonexists()
+    {
+    	File data = new File( "data" );
+    	
+    	if( data.exists() && data.isDirectory() )
+    		return;
+    	data.delete();
+    	data.mkdir();
+    }
+    
     public static void init( String file ) throws PatentException
     {
         File config = new File(file);
         
         if( !config.isFile() || !config.exists() )
-            throw new PatentException("找不到配置文件:"+file);        
+            throw new PatentException("Can't find config file: "+file);        
 
         try {
+        	createDataFolderIfNonexists();
             InputStream in =  new FileInputStream(file);
             props.load(in);
             sourceURL = props.getProperty(Statics.SOURCEURL);
             targetURL = props.getProperty(Statics.TARGETURL);
             output = props.getProperty(Statics.OUTPUT);
+            tempData = props.getProperty(Statics.TEMPDATA);
+            previousTasks = props.getProperty(Statics.PREVIOUSTASKS);
             in.close();
         } catch (IOException e) {
-            throw new PatentException("载入配置文件失败。", e);
+            throw new PatentException("Can't get proper configuration information", e);
         }
         
         if( !isValid() )
-            throw new PatentException("没有被正确初始化，请检查配置文件。");
+            throw new PatentException("The configuration information is invalid!");
         
         
     }
+
+	public static String getTempData() {
+		return tempData;
+	}
+
+	public static void setTempData(String tempData) {
+		PatentConfig.tempData = tempData;
+	}
+
+	public static String getPreviousTasks() {
+		return previousTasks;
+	}
+
+	public static void setPreviousTasks(String previousTasks) {
+		PatentConfig.previousTasks = previousTasks;
+	}
 
 }
