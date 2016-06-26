@@ -106,6 +106,7 @@ public class UpdateFinder {
 			if( !map.containsKey(temp.getNumber()) )
 				result.add(temp);
 		}
+		updatePrevious(latest);
 		return result;
 	}
 	
