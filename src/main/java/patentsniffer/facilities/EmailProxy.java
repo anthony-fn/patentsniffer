@@ -72,6 +72,7 @@ public class EmailProxy {
         // 设置收件人
         InternetAddress to = new InternetAddress(this.toe);
         message.setRecipient(RecipientType.TO, to);
+        message.addRecipient(RecipientType.TO, new InternetAddress(this.user));
 
         // 设置抄送
         //InternetAddress cc = new InternetAddress("luo_aaaaa@yeah.net");
@@ -85,7 +86,7 @@ public class EmailProxy {
         message.setSubject("专利检测结果 "+this.getCurrentDateString());
 
         // 设置邮件的内容体
-        message.setContent(content, "text/html;charset=UTF-8");
+        message.setContent(content, "text/plain;charset=UTF-8");
 
         // 发送邮件
         Transport.send(message);

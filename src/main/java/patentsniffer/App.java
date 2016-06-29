@@ -42,7 +42,7 @@ public class App {
             for( PatentUnit temp : newOnes )
             {
             	sb.append(temp.toString());
-            	sb.append(Statics.LINE_SEPARATOR);
+            	sb.append("\r\n");
             }
             EmailProxy ep = new EmailProxy(PatentConfig.getFromEmail(), PatentConfig.getToEmail(), PatentConfig.getEmailServer(), PatentConfig.getEmailServerUser(), 
             		PatentConfig.getEmailServerUserPassword());
