@@ -1,4 +1,4 @@
-package patentsniffer;
+package patentsniffer.facilities;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -10,12 +10,16 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import patentsniffer.PatentException;
+import patentsniffer.PatentUnit;
+import patentsniffer.PatentUnitFactory;
+
 public class TasksParser {
 	private static final Logger logger = LogManager.getLogger();
 	
-	public static List<PaterntUnit> getFirstUnits( String file ) throws PatentException
+	public static List<PatentUnit> getFirstUnits( String file ) throws PatentException
 	{
-		List<PaterntUnit> result = new LinkedList<PaterntUnit>();
+		List<PatentUnit> result = new LinkedList<PatentUnit>();
 		FileReader reader = null;
 		BufferedReader br = null;
 		try {
@@ -30,7 +34,7 @@ public class TasksParser {
 	        		break;
 	        	else if( flag && str.contains("</tr>"))
 	        	{
-	        		result.add(PaternUnitFactory.getUnitFirst(content));
+	        		result.add(PatentUnitFactory.getUnitFirst(content));
 	        		content = "";
 	        		flag = false;
 	        		continue;
@@ -67,9 +71,9 @@ public class TasksParser {
 		
 		return result;
 	}
-	public static List<PaterntUnit> getSecondUnits()
+	public static List<PatentUnit> getSecondUnits()
 	{
-		List<PaterntUnit> result = new LinkedList<PaterntUnit>();
+		List<PatentUnit> result = new LinkedList<PatentUnit>();
 		FileReader reader = null;
 		BufferedReader br = null;
 		try {
@@ -87,7 +91,7 @@ public class TasksParser {
 	        			continue;
 	        		if( str.equalsIgnoreCase("<td></tr>") )
 	        		{
-	        			result.add(new PaterntUnit(content));
+	        			result.add(new PatentUnit(content));
 	        			content = "";
 	        			inside = false;
 	        		}
@@ -128,7 +132,7 @@ public class TasksParser {
 			
 		}
         
-        for( PaterntUnit temp : result)
+        for( PatentUnit temp : result)
         {
         	System.out.println(temp.toString());
         }

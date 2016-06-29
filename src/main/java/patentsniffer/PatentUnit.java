@@ -1,6 +1,6 @@
 package patentsniffer;
 
-public class PaterntUnit {
+public class PatentUnit {
 
 	private String number = "";
 	private String href = "";
@@ -19,12 +19,12 @@ public class PaterntUnit {
 		PaterntUnit temp = new PaterntUnit(content);
 	}*/
 	
-	public PaterntUnit()
+	public PatentUnit()
 	{
 		super();
 	}
 	
-	public PaterntUnit( String content )
+	public PatentUnit( String content )
 	{
 		int start = content.indexOf(";");
 		int end = content.indexOf("</td>");

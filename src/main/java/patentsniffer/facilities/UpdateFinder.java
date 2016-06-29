@@ -1,4 +1,4 @@
-package patentsniffer;
+package patentsniffer.facilities;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,12 +15,17 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import patentsniffer.PatentConfig;
+import patentsniffer.PatentException;
+import patentsniffer.PatentUnit;
+import patentsniffer.PatentUnitFactory;
+
 public class UpdateFinder {
 	
 	private static final Logger logger = LogManager.getLogger();
 	
-	private static Map<String, PaterntUnit> map = null;
-	private static void updatePrevious( List<PaterntUnit> latest ) throws PatentException
+	private static Map<String, PatentUnit> map = null;
+	private static void updatePrevious( List<PatentUnit> latest ) throws PatentException
 	{
 		File previous = new File(PatentConfig.getPreviousTasks());
 		
@@ -33,7 +38,7 @@ public class UpdateFinder {
 			 fw = new FileWriter(previous);
 			 bw = new BufferedWriter(fw);
 			 
-			 for( PaterntUnit unit : latest )
+			 for( PatentUnit unit : latest )
 			 {
 				 bw.write(unit.toString());
 				 bw.newLine();
@@ -57,7 +62,7 @@ public class UpdateFinder {
 	
 	private static void loadPrevious() throws PatentException
 	{
-		map = new HashMap<String, PaterntUnit>();
+		map = new HashMap<String, PatentUnit>();
 		
 		FileReader reader = null;
 		BufferedReader br = null;
@@ -67,7 +72,7 @@ public class UpdateFinder {
 		       
 	        String str = null;
 	        while((str = br.readLine()) != null) {
-	        	PaterntUnit temp = PaternUnitFactory.getUnitOneFromPrevious(str);
+	        	PatentUnit temp = PatentUnitFactory.getUnitOneFromPrevious(str);
 	        	map.put(temp.getNumber(), temp);
 	        }
 	        
@@ -87,7 +92,7 @@ public class UpdateFinder {
 			
 		}
 	}
-	public static List<PaterntUnit> find( List<PaterntUnit> latest ) throws PatentException
+	public static List<PatentUnit> find( List<PatentUnit> latest ) throws PatentException
 	{
 		File previous = new File(PatentConfig.getPreviousTasks());
 		
@@ -99,9 +104,9 @@ public class UpdateFinder {
 		
 		loadPrevious();
 		
-		List<PaterntUnit> result = new LinkedList<PaterntUnit>();
+		List<PatentUnit> result = new LinkedList<PatentUnit>();
 		
-		for( PaterntUnit temp : latest )
+		for( PatentUnit temp : latest )
 		{
 			if( !map.containsKey(temp.getNumber()) )
 				result.add(temp);

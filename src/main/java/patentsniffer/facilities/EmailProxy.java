@@ -1,5 +1,7 @@
-package patentsniffer;
+package patentsniffer.facilities;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -12,12 +14,28 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class EmailProxy {
-	private static String from = "anthony_fn@163.com";
-	private static String psswd = "Test1234";
-	private static String server = "smtp.163.com";
+	private String frome = "anthony_fn@163.com";
+	private String toe = "";
+	private String user = "";
+	private String passwd = "Test1234";
+	private String server = "smtp.163.com";
 	
+	public EmailProxy( String fromEmail, String toEmail, String emailServer, String emailServerUser, String emailServerPassword )
+	{
+		frome = fromEmail;
+		toe = toEmail;
+		user = emailServerUser;
+		passwd = emailServerPassword;
+		server = emailServer;
+	}
 	
-	public static void sendEmail( String content ) throws MessagingException
+	private String getCurrentDateString()
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat();
+		
+		return sdf.format(new Date());
+	}
+	public void sendEmail( String content ) throws MessagingException
 	{
 		final Properties props = new Properties();
         /*
@@ -26,11 +44,11 @@ public class EmailProxy {
          */
         // 表示SMTP发送邮件，需要进行身份验证
         props.put("mail.smtp.auth", true);
-        props.put("mail.smtp.host", server);
+        props.put("mail.smtp.host", this.server);
         // 发件人的账号
-        props.put("mail.user", from);
+        props.put("mail.user", this.user);
         // 访问SMTP服务时需要提供的密码
-        props.put("mail.password", psswd);
+        props.put("mail.password", passwd);
 
         // 构建授权信息，用于进行SMTP进行身份验证
         Authenticator authenticator = new Authenticator() {
@@ -48,11 +66,11 @@ public class EmailProxy {
         MimeMessage message = new MimeMessage(mailSession);
         // 设置发件人
         InternetAddress form = new InternetAddress(
-                props.getProperty("mail.user"));
+               this.user);
         message.setFrom(form);
 
         // 设置收件人
-        InternetAddress to = new InternetAddress("anthony_fn@163.com");
+        InternetAddress to = new InternetAddress(this.toe);
         message.setRecipient(RecipientType.TO, to);
 
         // 设置抄送
@@ -64,7 +82,7 @@ public class EmailProxy {
         //message.setRecipient(RecipientType.CC, bcc);
 
         // 设置邮件标题
-        message.setSubject("测试邮件");
+        message.setSubject("专利检测结果 "+this.getCurrentDateString());
 
         // 设置邮件的内容体
         message.setContent(content, "text/html;charset=UTF-8");

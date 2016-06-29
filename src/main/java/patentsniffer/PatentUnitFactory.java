@@ -1,6 +1,6 @@
 package patentsniffer;
 
-public class PaternUnitFactory {
+public class PatentUnitFactory {
 	
 	
 	/*public static void main( String [] args )
@@ -15,12 +15,12 @@ public class PaternUnitFactory {
 		}
 	}*/
 	
-	public static PaterntUnit getUnitFirst( String content ) throws PatentException
+	public static PatentUnit getUnitFirst( String content ) throws PatentException
 	{
 		if( content == null || content.isEmpty() )
 			throw new PatentException("Empty input for paternt unit factory");
 		
-		PaterntUnit result = new PaterntUnit();
+		PatentUnit result = new PatentUnit();
 		
 		int start = "<tr><td>".length();
 		int end = content.indexOf("</td>");
@@ -55,12 +55,12 @@ public class PaternUnitFactory {
 		
 		return result;
 	}
-	public static PaterntUnit getUnitSecond( String content ) throws PatentException
+	public static PatentUnit getUnitSecond( String content ) throws PatentException
 	{
 		if( content == null || content.isEmpty() )
 			throw new PatentException("Empty input for paternt unit factory");
 		
-		PaterntUnit result = new PaterntUnit();
+		PatentUnit result = new PatentUnit();
 		
 		int start = content.indexOf(";");
 		int end = content.indexOf("</td>");
@@ -86,14 +86,14 @@ public class PaternUnitFactory {
 		return result;
 	}
 	
-	public static PaterntUnit getUnitOneFromPrevious( String content )
+	public static PatentUnit getUnitOneFromPrevious( String content )
 	{
 		if( content == null || content.isEmpty() )
 			return null;
 		
 		String [] contents = content.split(";");
 		
-		PaterntUnit result = new PaterntUnit();
+		PatentUnit result = new PatentUnit();
 		result.setNumber(contents[0]);
 		result.setName(contents[1]);
 		result.setDate(contents[2]);
